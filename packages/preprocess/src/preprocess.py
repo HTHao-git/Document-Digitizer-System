@@ -1,4 +1,4 @@
-SCHEMA_VERSION = "1.0.0"
+deep_mergeSCHEMA_VERSION = "1.0.0"
 
 from pathlib import Path
 import json, uuid
@@ -6,6 +6,7 @@ from datetime import datetime
 import cv2
 import numpy as np
 import pytesseract
+from pytesseract import Output
 import yaml
 from jsonschema import validate, ValidationError
 import logging
@@ -106,126 +107,123 @@ def setup_logger(log_path=None):
 
     return logger
 
-def detect_rotation_osd(gray):
+def verify_rotation_by_ocr(img_0, img_rotated):
+    def get_ocr_score(image):
+        h, w = image.shape[:2]
+
+        crop = image[h//4:3*h//4, w//4:3*w//4]
+
+        data = pytesseract.image_to_data(crop, output_type=Output.DICT, config="--psm 11 --dpi 300")
+
+        conf_scores = [int(conf) for conf in data['conf'] if int(conf) > 10]
+        return sum(conf_scores), len(conf_scores)
+
+    score0, count0 = get_ocr_score(img_0)
+    scoreRot, countRot = get_ocr_score(img_rotated)
+
+    if countRot > count0 or scoreRot > score0:
+        return True
+    
+    return False
+
+def get_osd_info(img, min_conf=2.0):
+    res = {"success": False, "rotate_deg": 0, "conf": 0, "message": ""}
+    tess_config = '--psm 0 --dpi 300'
+
+    # Lần 1: Thử tiêu chuẩn
     try:
-        osd = pytesseract.image_to_osd(gray, output_type=pytesseract.Output.DICT)
-        return int(osd.get("rotate", 0)), True, ""
-    except Exception as e:
-        return 0, False, str(e)
+        data = pytesseract.image_to_osd(img, config=tess_config, output_type=Output.DICT)
+        res.update({"success": True, "rotate_deg": data["rotate"], "conf": data["orientation_conf"]})
+    except Exception:
+        # Lần 2: Phóng to
+        try:
+            h, w = img.shape[:2]
+            upscaled = cv2.resize(img, (w * 2, h * 2), interpolation=cv2.INTER_CUBIC)
+            # Nhị phân hóa tạm thời để nổi bật chữ
+            gray = cv2.cvtColor(upscaled, cv2.COLOR_BGR2GRAY)
+            gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+            
+            data = pytesseract.image_to_osd(gray, config=tess_config, output_type=Output.DICT)
+            res.update({"success": True, "rotate_deg": data["rotate"], "conf": data["orientation_conf"], "message": "Double-Pass Success"})
+        except Exception as e:
+            res["message"] = f"OSD Failed: {str(e)}"
+    
+    return res
 
-def preprocess_image(img, cfg):
-    # --- Resize ---
-    target_width = cfg["resize"]["target_width"]
-    img = resize_to_width(img, target_width)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    # --- Denoise ---
-    if cfg["denoise"]["method"] == "fastNlMeans":
-        h = cfg["denoise"]["h"]
-        denoise = cv2.fastNlMeansDenoising(gray, None, h, 7, 21)
-    else:
-        denoise = gray
-
-    # --- Auto-crop ---
-    crop_applied = False
-    if cfg["crop"]["enable"]:
-        edges = cv2.Canny(denoise, 50, 150)
-        contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        contours = sorted(contours, key=cv2.contourArea, reverse=True)
-
-        h, w = img.shape[:2]
-        img_area = w * h
-        min_area = cfg["crop"]["min_area_ratio"] * img_area
-        min_w = cfg["crop"]["min_w_ratio"] * w
-        min_h = cfg["crop"]["min_h_ratio"] * h
-
-        if contours:
-            c = contours[0]
-            area = cv2.contourArea(c)
-            x, y, cw, ch = cv2.boundingRect(c)
-
-            if area >= min_area and cw >= min_w and ch >= min_h:
-                rect = cv2.minAreaRect(c)
-                box = cv2.boxPoints(rect)
-                box = box.astype("int32")
-                img = four_point_transform(img, box)
-
-                pad = cfg["crop"]["padding"]
-                img = cv2.copyMakeBorder(img, pad, pad, pad, pad,
-                                         cv2.BORDER_CONSTANT, value=(255, 255, 255))
-                crop_applied = True
-
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    # --- Deskew ---
-    deskew_angle = 0.0
-    if cfg["deskew"]["enable"]:
-        thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-        coords = np.column_stack(np.where(thresh < 255))
-        if len(coords) > 0:
-            angle = cv2.minAreaRect(coords)[-1]
-            if angle < -45: angle = -(90 + angle)
-            else: angle = -angle
-            deskew_angle = float(angle)
-            (h, w) = img.shape[:2]
-            M = cv2.getRotationMatrix2D((w // 2, h // 2), angle, 1.0)
-            img = cv2.warpAffine(img, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
-            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    # --- Normalize ---
-    if cfg["normalize"]["method"] == "clahe":
-        clahe = cv2.createCLAHE(clipLimit=cfg["normalize"]["clip_limit"],
-                                tileGridSize=tuple(cfg["normalize"]["tile_grid"]))
-        gray = clahe.apply(gray)
-
-    # --- Binarize ---
-    if cfg["binarize"]["method"] == "adaptive":
-        block = cfg["binarize"]["block_size"]
-        C = cfg["binarize"]["C"]
-        bin_img = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                        cv2.THRESH_BINARY, block, C)
-    else:
-        bin_img = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-
-    # --- Morphology ---
-    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, tuple(cfg["morphology"]["kernel"]))
-    bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel)
-    bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_CLOSE, kernel)
-
-    # --- Blank detect ---
-    black_ratio = count_black_ratio(bin_img)
-    is_blank = black_ratio < cfg["blank_detect"]["threshold"]
-
-    # --- OSD rotation ---
-    osd_cfg = cfg["osd"]
-    osd_attempted = False
-    osd_success = False
-    osd_message = ""
-    rotation = 0
-
-    if osd_cfg["enable"]:
-        h, w = gray.shape[:2]
-        if h >= osd_cfg["min_height"] and w >= osd_cfg["min_width"] and black_ratio > osd_cfg["min_black_ratio"]:
-            osd_attempted = True
-            rotation, osd_success, osd_message = detect_rotation_osd(gray)
-
-    if rotation in (90, 180, 270):
-        img = cv2.rotate(img, {90: cv2.ROTATE_90_CLOCKWISE,
-                               180: cv2.ROTATE_180,
-                               270: cv2.ROTATE_90_COUNTERCLOCKWISE}[rotation])
-
-    return img, bin_img, {
-        "is_blank": is_blank,
-        "black_ratio": float(black_ratio),
-        "rotation": rotation,
-        "crop_applied": crop_applied,
-        "deskew_angle": deskew_angle,
-        "osd": {
-            "attempted": osd_attempted,
-            "success": osd_success,
-            "message": osd_message
-        }
+def apply_preprocessing(img, cfg):
+    meta = {
+        "original_size": img.shape[:2],
+        "rotation_detected": 0,
+        "deskew_angle": 0.0,
+        "crop_applied": False,
+        "is_blank": False,
+        "black_ratio": 0.0,
+        "osd": {}
     }
+
+    # Bước A: Resize ban đầu
+    work_img = resize_to_width(img, cfg['resize']['target_width'])
+
+    # Bước B: Xoay hướng (OSD + Trọng tài OCR)
+    osd = get_osd_info(work_img, cfg["osd"].get("min_confidence", 2.0))
+    meta["osd"] = osd
+    
+    if osd["success"] and osd["rotate_deg"] != 0:
+        rot_map = {90: cv2.ROTATE_90_CLOCKWISE, 180: cv2.ROTATE_180, 270: cv2.ROTATE_90_COUNTERCLOCKWISE}
+        temp_rot = cv2.rotate(work_img, rot_map[osd["rotate_deg"]])
+        
+        # Chỉ xoay nếu tin cậy cao HOẶC được Trọng tài OCR thông qua
+        if osd["conf"] >= cfg["osd"].get("min_confidence", 2.0) or verify_rotation_by_ocr(work_img, temp_rot):
+            work_img = temp_rot
+            meta["rotation_detected"] = osd["rotate_deg"]
+        else:
+            osd["message"] += " | Rotation rejected by OCR arbitrator"
+
+    # Bước C: Cắt biên (Document Crop)
+    if cfg["crop"]["enable"]:
+        # Tận dụng code từ sent.txt của bạn
+        gray_temp = cv2.cvtColor(work_img, cv2.COLOR_BGR2GRAY)
+        edged = cv2.Canny(cv2.GaussianBlur(gray_temp, (5, 5), 0), 75, 200)
+        cnts, _ = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:5]
+        for c in cnts:
+            peri = cv2.arcLength(c, True)
+            approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+            if len(approx) == 4:
+                area_ratio = cv2.contourArea(c) / (work_img.shape[0] * work_img.shape[1])
+                if area_ratio > cfg["crop"]["min_area_ratio"]:
+                    work_img = four_point_transform(work_img, approx.reshape(4, 2))
+                    meta["crop_applied"] = True
+                    break
+
+    # Bước D: Chỉnh nghiêng (Deskew dùng Hough Lines - Tránh lỗi Hình 05)
+    gray_ds = cv2.cvtColor(work_img, cv2.COLOR_BGR2GRAY)
+    edges = cv2.Canny(gray_ds, 50, 150)
+    lines = cv2.HoughLinesP(edges, 1, np.pi/180, 100, minLineLength=100, maxLineGap=10)
+    if lines is not None:
+        angles = [np.degrees(np.arctan2(l[0][3]-l[0][1], l[0][2]-l[0][0])) for l in lines]
+        angle = np.median(angles)
+        if abs(angle) < 45: # Chỉ xoay nếu là góc nghiêng văn bản
+            (h, w) = work_img.shape[:2]
+            M = cv2.getRotationMatrix2D((w // 2, h // 2), angle, 1.0)
+            work_img = cv2.warpAffine(work_img, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+            meta["deskew_angle"] = angle
+
+# Bước E: Tạo thành phẩm
+    clean_gray = cv2.cvtColor(work_img, cv2.COLOR_BGR2GRAY)
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+    clean_img = clahe.apply(clean_gray)
+
+    bin_img = cv2.adaptiveThreshold(cv2.medianBlur(clean_img, 3), 255, 
+                                    cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 
+                                    cfg["binarize"]["block_size"], cfg["binarize"]["C"])
+
+    # Tính toán tỷ lệ đen và kiểm tra Blank
+    ratio = count_black_ratio(bin_img)
+    meta["black_ratio"] = float(ratio) # Lưu vào meta
+    meta["is_blank"] = ratio < cfg["blank_detect"]["threshold"]
+
+    return bin_img, clean_img, meta
 
 def process_folder(input_dir: Path, output_dir: Path, json_dir: Path, config_path="config.yaml", log_path=None):
     cfg = load_config(config_path)
@@ -240,10 +238,9 @@ def process_folder(input_dir: Path, output_dir: Path, json_dir: Path, config_pat
 
         try:
             img = cv2.imread(str(p))
-            if img is None:
-                raise ValueError("cv2.imread returned None (file may be corrupt or unreadable)")
-
-            clean_img, bin_img, meta = preprocess_image(img, cfg)
+            if img is None: continue
+            # SỬA THỨ TỰ NHẬN: bin_img trước, clean_img sau
+            bin_img, clean_img, meta = apply_preprocessing(img, cfg)
 
             out_clean = output_dir / f"{p.stem}_clean.png"
             out_bin = output_dir / f"{p.stem}_bin.png"
@@ -264,9 +261,9 @@ def process_folder(input_dir: Path, output_dir: Path, json_dir: Path, config_pat
                     "output_image": str(out_clean),
                     "width": int(clean_img.shape[1]),
                     "height": int(clean_img.shape[0]),
-                    "rotation": meta["rotation"],
+                    "rotation": meta["rotation_detected"],
                     "is_blank": bool(meta["is_blank"]),
-                    "blank_ratio": meta["black_ratio"],
+                    "blank_ratio": meta.get("black_ratio", 0.0),
                     "crop_applied": meta["crop_applied"],
                     "deskew_angle": meta["deskew_angle"],
                     "osd": meta["osd"]
@@ -305,6 +302,6 @@ def process_folder(input_dir: Path, output_dir: Path, json_dir: Path, config_pat
 
         elapsed = time.time() - start
         if status == "SUCCESS":
-            logger.info(f"{p.name} | time={elapsed:.3f}s | blank={result['payload']['is_blank']} | rot={result['payload']['rotation']}")
+            logger.info(f"{p.name} | time={elapsed:.3f}s | blank={result['payload']['is_blank']} | rot={result['payload']['rotation']} | deskew={result['payload']['deskew_angle']}")
         else:
             logger.error(f"{p.name} | time={elapsed:.3f}s | error={result['error']['message']}")
