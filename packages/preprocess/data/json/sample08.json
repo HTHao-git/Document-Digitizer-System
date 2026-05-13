@@ -1,0 +1,27 @@
+{
+  "request_id": "23e56af1-71e6-47d4-8f52-bd124287379e",
+  "document_id": "local_doc_8",
+  "module": "preprocess",
+  "version": "1.0.0",
+  "timestamp": "2026-05-13T07:29:05.334470Z",
+  "status": "success",
+  "error": null,
+  "payload": {
+    "page": 8,
+    "input_image": "data\\input\\sample08.png",
+    "output_image": "data\\output\\sample08_clean.png",
+    "width": 647,
+    "height": 705,
+    "rotation": 180,
+    "is_blank": false,
+    "blank_ratio": 0.1733960340688612,
+    "crop_applied": false,
+    "deskew_angle": -14.89347295884161,
+    "osd": {
+      "success": true,
+      "rotate_deg": 180,
+      "conf": 3.69,
+      "message": ""
+    }
+  }
+}

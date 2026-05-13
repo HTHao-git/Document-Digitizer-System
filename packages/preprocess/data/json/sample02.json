@@ -1,0 +1,27 @@
+{
+  "request_id": "20da3468-4bd4-4f47-b486-e980eed2be86",
+  "document_id": "local_doc_2",
+  "module": "preprocess",
+  "version": "1.0.0",
+  "timestamp": "2026-05-13T07:28:57.686473Z",
+  "status": "success",
+  "error": null,
+  "payload": {
+    "page": 2,
+    "input_image": "data\\input\\sample02.png",
+    "output_image": "data\\output\\sample02_clean.png",
+    "width": 547,
+    "height": 669,
+    "rotation": 0,
+    "is_blank": false,
+    "blank_ratio": 0.1615497495511596,
+    "crop_applied": false,
+    "deskew_angle": 0.0,
+    "osd": {
+      "success": true,
+      "rotate_deg": 90,
+      "conf": 0.26,
+      "message": " | Rotation rejected by OCR arbitrator"
+    }
+  }
+}
