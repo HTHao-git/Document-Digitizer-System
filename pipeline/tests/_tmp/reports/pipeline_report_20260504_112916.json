@@ -1,0 +1,41 @@
+{
+  "start_time": "2026-05-04 11:29:16",
+  "end_time": "2026-05-04 11:29:16",
+  "status": "failed",
+  "error_code": 10,
+  "environment": {
+    "python": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\.venv\\Scripts\\python.exe",
+    "platform": "win32"
+  },
+  "io": {
+    "input_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\tests\\_tmp\\data\\input",
+    "output_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\tests\\_tmp\\data\\output",
+    "json_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\tests\\_tmp\\data\\json"
+  },
+  "steps": [
+    {
+      "name": "preprocess",
+      "status": "failed",
+      "return_code": 1,
+      "duration_sec": 0.0,
+      "stdout": "",
+      "stderr": "forced failure for testing",
+      "input_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\tests\\_tmp\\data\\input",
+      "output_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\data\\output\\preprocess",
+      "json_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\data\\json\\preprocess",
+      "input_files": 1,
+      "input_by_extension": {
+        ".png": 1
+      }
+    }
+  ],
+  "warnings": [],
+  "skipped_modules": [],
+  "duration_sec": 0.006,
+  "summary": {
+    "total_steps": 1,
+    "total_input_files": 1,
+    "total_output_files": 0,
+    "total_json_files": 0
+  }
+}

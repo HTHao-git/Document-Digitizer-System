@@ -1,0 +1,20 @@
+io:
+  input_dir: E:\HTHao\Internship\Document-Digitizer-System\pipeline\tests\_tmp\data\input
+  json_dir: E:\HTHao\Internship\Document-Digitizer-System\pipeline\tests\_tmp\data\json
+  output_dir: E:\HTHao\Internship\Document-Digitizer-System\pipeline\tests\_tmp\data\output
+modules:
+  ocr:
+    config_path: E:\HTHao\Internship\Document-Digitizer-System\pipeline\..\packages\ocr\config.yaml
+    enable: true
+    input_dir: ./data/output/preprocess
+    json_dir: ./data/json/ocr
+    line_dir: ./data/lines
+  preprocess:
+    config_path: E:\HTHao\Internship\Document-Digitizer-System\pipeline\..\packages\preprocess\config.yaml
+    enable: true
+    json_dir: ./data/json/preprocess
+    output_dir: ./data/output/preprocess
+runtime:
+  log_path: E:\HTHao\Internship\Document-Digitizer-System\pipeline\tests\_tmp\pipeline.log
+  report_path: E:\HTHao\Internship\Document-Digitizer-System\pipeline\tests\_tmp\reports
+  stop_on_error: true

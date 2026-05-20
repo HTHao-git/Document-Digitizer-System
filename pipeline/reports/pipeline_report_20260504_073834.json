@@ -1,0 +1,41 @@
+{
+  "start_time": "2026-05-04 07:38:34",
+  "end_time": "2026-05-04 07:38:34",
+  "status": "success",
+  "error_code": null,
+  "environment": {
+    "python": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\.venv\\Scripts\\python.exe",
+    "platform": "win32"
+  },
+  "io": {
+    "input_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\data\\input",
+    "output_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\data\\output",
+    "json_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\data\\json"
+  },
+  "steps": [
+    {
+      "name": "preprocess",
+      "status": "dry-run",
+      "return_code": 0,
+      "duration_sec": 0.0,
+      "stdout": "",
+      "stderr": "",
+      "input_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\data\\input",
+      "output_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\data\\output\\preprocess",
+      "json_dir": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\data\\json\\preprocess",
+      "input_files": 0,
+      "input_by_extension": {}
+    }
+  ],
+  "warnings": [
+    "preprocess input_files = 0",
+    "ocr config not found: E:\\HTHao\\Internship\\Document-Digitizer-System\\packages\\ocr\\config.yaml. Skipping module."
+  ],
+  "duration_sec": 0.069,
+  "summary": {
+    "total_steps": 1,
+    "total_input_files": 0,
+    "total_output_files": 0,
+    "total_json_files": 0
+  }
+}

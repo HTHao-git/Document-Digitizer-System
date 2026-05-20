@@ -1,0 +1,22 @@
+io:
+  input_dir: "./data/input"
+  output_dir: "./data/output"
+  json_dir: "./data/json"
+
+modules:
+  preprocess:
+    enable: true
+    config_path: "../packages/preprocess/config.yaml"
+    output_dir: "./data/output/preprocess"
+    json_dir: "./data/json/preprocess"
+  ocr:
+    enable: true
+    config_path: "../packages/ocr/config.yaml"
+    input_dir: "./data/output/preprocess"
+    json_dir: "./data/json/ocr"
+    line_dir: "./data/lines"
+
+runtime:
+  stop_on_error: true
+  log_path: "./pipeline.log"
+  report_path: "./reports/"

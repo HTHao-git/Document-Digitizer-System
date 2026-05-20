@@ -1,0 +1,43 @@
+{
+  "start_time": "2026-04-29 09:54:39",
+  "end_time": "2026-04-29 09:54:40",
+  "status": "failed",
+  "error_code": 40,
+  "environment": {
+    "python": "E:\\HTHao\\Internship\\Document-Digitizer-System\\pipeline\\.venv\\Scripts\\python.exe",
+    "platform": "win32"
+  },
+  "io": {
+    "input_dir": "./data/input",
+    "output_dir": "./data/output",
+    "json_dir": "./data/json"
+  },
+  "steps": [
+    {
+      "name": "preprocess",
+      "status": "success",
+      "return_code": 0,
+      "duration_sec": 0.771,
+      "input_dir": "./data/input",
+      "output_dir": "./data/output/preprocess",
+      "json_dir": "./data/json/preprocess",
+      "input_files": 0,
+      "input_by_extension": {},
+      "output_files": 0,
+      "output_by_extension": {},
+      "json_files": 0,
+      "json_by_extension": {}
+    }
+  ],
+  "warnings": [
+    "preprocess output_files = 0",
+    "preprocess json_files = 0"
+  ],
+  "duration_sec": 0.777,
+  "summary": {
+    "total_steps": 1,
+    "total_input_files": 0,
+    "total_output_files": 0,
+    "total_json_files": 0
+  }
+}

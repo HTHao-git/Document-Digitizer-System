@@ -1,0 +1,55 @@
+2026-04-29 08:11:59,972 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 08:12:00,005 | INFO | [PIPELINE] Running: python ../packages/preprocess/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 08:12:00,070 | ERROR | [PIPELINE] Command failed: python ../packages/preprocess/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:00:28,341 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 09:00:28,351 | INFO | [PIPELINE] Running: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:00:28,437 | ERROR | [PIPELINE] Command failed: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:00:41,243 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 09:00:41,250 | INFO | [PIPELINE] Running: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:00:41,315 | ERROR | [PIPELINE] Command failed: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:01:46,456 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 09:01:46,462 | INFO | [PIPELINE] Running: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:01:46,522 | ERROR | [PIPELINE] Command failed: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:12:53,460 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 09:12:53,478 | INFO | [PIPELINE] Running: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:12:53,569 | ERROR | [PIPELINE] Command failed: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:15:33,442 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 09:15:33,449 | INFO | [PIPELINE] Running: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:15:33,562 | ERROR | [PIPELINE] Command failed: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:22:14,333 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 09:22:14,339 | INFO | [PIPELINE] Running: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:22:14,403 | ERROR | [PIPELINE] Command failed: python ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:27:53,052 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 09:27:53,059 | INFO | [PIPELINE] Running: E:\HTHao\Internship\Document-Digitizer-System\pipeline\.venv\Scripts\python.exe ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:27:53,159 | ERROR | [PIPELINE] Command failed: E:\HTHao\Internship\Document-Digitizer-System\pipeline\.venv\Scripts\python.exe ../packages/preprocess/src/run.py --config ../packages/preprocess/config.yaml
+2026-04-29 09:29:29,351 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 09:29:29,357 | INFO | [PIPELINE] Running: E:\HTHao\Internship\Document-Digitizer-System\pipeline\.venv\Scripts\python.exe -m src.run --config config.yaml
+2026-04-29 09:29:31,594 | INFO | [PIPELINE] OCR enabled
+2026-04-29 09:53:21,766 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 09:53:22,544 | INFO | [PIPELINE] OCR enabled
+2026-04-29 09:53:22,544 | INFO | [PIPELINE] Report saved: ./pipeline_report.json
+2026-04-29 09:54:39,837 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 09:54:40,614 | INFO | [PIPELINE] OCR enabled
+2026-04-29 09:54:40,615 | INFO | [PIPELINE] Report saved: ./pipeline_report.json
+2026-04-29 10:01:17,521 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 10:01:18,372 | INFO | [PIPELINE] OCR enabled
+2026-04-29 10:01:18,389 | INFO | [PIPELINE] Report saved: ./reports/pipeline_report_20260429_100117.json
+2026-04-29 10:23:14,808 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 10:23:14,809 | INFO | [PIPELINE] Report saved: ./reports/pipeline_report_20260429_102314.json
+2026-04-29 10:46:44,333 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 10:46:44,334 | INFO | [PIPELINE] Report saved: ./reports/pipeline_report_20260429_104644.json
+2026-04-29 10:49:07,944 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 10:49:07,950 | INFO | [PIPELINE] OCR enabled
+2026-04-29 10:49:07,951 | INFO | [PIPELINE] Report saved: ./reports/pipeline_report_20260429_104907.json
+2026-04-29 10:54:23,514 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 10:54:23,525 | INFO | [PIPELINE] OCR enabled
+2026-04-29 10:54:23,538 | INFO | [PIPELINE] Report saved: ./reports/pipeline_report_20260429_105423.json
+2026-04-29 10:56:22,968 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 10:56:22,975 | INFO | [PIPELINE] OCR enabled
+2026-04-29 10:56:22,975 | INFO | [PIPELINE] Report saved: ./reports/pipeline_report_20260429_105622.json
+2026-04-29 10:57:16,860 | INFO | [PIPELINE] Preprocess enabled
+2026-04-29 10:57:16,866 | INFO | [PIPELINE] OCR enabled
+2026-04-29 10:57:16,867 | INFO | [PIPELINE] Report saved: ./reports/pipeline_report_20260429_105716.json
+2026-05-04 07:38:34,154 | INFO | [PIPELINE] Preprocess enabled
+2026-05-04 07:38:34,212 | INFO | [PIPELINE] OCR enabled
+2026-05-04 07:38:34,298 | INFO | [PIPELINE] Report saved: ./reports/pipeline_report_20260504_073834.json

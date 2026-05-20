@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PipelineReport",
+  "type": "object",
+  "required": [
+    "start_time",
+    "end_time",
+    "status",
+    "error_code",
+    "environment",
+    "io",
+    "steps",
+    "warnings",
+    "summary",
+    "duration_sec"
+  ],
+  "properties": {
+    "start_time": { "type": "string" },
+    "end_time": { "type": "string" },
+    "status": { "type": "string", "enum": ["running", "success", "failed"] },
+    "error_code": { "type": ["integer", "null"] },
+    "duration_sec": { "type": "number" },
+    "environment": {
+      "type": "object",
+      "required": ["python", "platform"],
+      "properties": {
+        "python": { "type": "string" },
+        "platform": { "type": "string" }
+      }
+    },
+    "io": {
+      "type": "object",
+      "required": ["input_dir", "output_dir", "json_dir"],
+      "properties": {
+        "input_dir": { "type": "string" },
+        "output_dir": { "type": "string" },
+        "json_dir": { "type": "string" }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "skipped_modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["module", "reason"],
+        "properties": {
+          "module": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "status", "return_code", "duration_sec", "stdout", "stderr"],
+        "properties": {
+          "name": { "type": "string" },
+          "status": { "type": "string" },
+          "return_code": { "type": "integer" },
+          "duration_sec": { "type": "number" },
+          "stdout": { "type": "string" },
+          "stderr": { "type": "string" },
+
+          "reason": { "type": "string" },
+
+          "input_dir": { "type": "string" },
+          "output_dir": { "type": "string" },
+          "json_dir": { "type": "string" },
+          "line_dir": { "type": "string" },
+
+          "input_files": { "type": "integer" },
+          "output_files": { "type": "integer" },
+          "json_files": { "type": "integer" },
+
+          "input_by_extension": { "type": "object", "additionalProperties": { "type": "integer" } },
+          "output_by_extension": { "type": "object", "additionalProperties": { "type": "integer" } },
+          "json_by_extension": { "type": "object", "additionalProperties": { "type": "integer" } }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total_steps", "total_input_files", "total_output_files", "total_json_files"],
+      "properties": {
+        "total_steps": { "type": "integer" },
+        "total_input_files": { "type": "integer" },
+        "total_output_files": { "type": "integer" },
+        "total_json_files": { "type": "integer" }
+      }
+    }
+  }
+}

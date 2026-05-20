@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PipelineConfig",
+  "type": "object",
+  "required": ["io", "modules", "runtime"],
+  "properties": {
+    "io": {
+      "type": "object",
+      "required": ["input_dir", "output_dir", "json_dir"],
+      "properties": {
+        "input_dir": { "type": "string" },
+        "output_dir": { "type": "string" },
+        "json_dir": { "type": "string" }
+      }
+    },
+    "modules": {
+      "type": "object",
+      "properties": {
+        "preprocess": {
+          "type": "object",
+          "required": ["enable", "config_path", "output_dir", "json_dir"],
+          "properties": {
+            "enable": { "type": "boolean" },
+            "config_path": { "type": "string" },
+            "output_dir": { "type": "string" },
+            "json_dir": { "type": "string" }
+          }
+        },
+        "ocr": {
+          "type": "object",
+          "required": ["enable", "config_path", "input_dir", "json_dir", "line_dir"],
+          "properties": {
+            "enable": { "type": "boolean" },
+            "config_path": { "type": "string" },
+            "input_dir": { "type": "string" },
+            "json_dir": { "type": "string" },
+            "line_dir": { "type": "string" }
+          }
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "required": ["stop_on_error", "log_path", "report_path"],
+      "properties": {
+        "stop_on_error": { "type": "boolean" },
+        "log_path": { "type": "string" },
+        "report_path": { "type": "string" }
+      }
+    }
+  }
+}
