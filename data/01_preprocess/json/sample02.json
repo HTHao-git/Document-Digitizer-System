@@ -1,0 +1,27 @@
+{
+  "request_id": "84823df4-ec2f-4461-9bec-283e2c56b7bb",
+  "document_id": "local_doc_2",
+  "module": "preprocess",
+  "version": "1.0.0",
+  "timestamp": "2026-06-09T11:51:47.792798Z",
+  "status": "success",
+  "error": null,
+  "payload": {
+    "page": 2,
+    "input_image": "E:\\HTHao\\Internship\\Document-Digitizer-System\\data\\00_input\\sample02.png",
+    "output_image": "E:\\HTHao\\Internship\\Document-Digitizer-System\\data\\01_preprocess\\images\\sample02_clean.png",
+    "width": 547,
+    "height": 669,
+    "rotation": 0,
+    "is_blank": false,
+    "blank_ratio": 0.1615497495511596,
+    "crop_applied": false,
+    "deskew_angle": 0.0,
+    "osd": {
+      "success": true,
+      "rotate_deg": 90,
+      "conf": 0.26,
+      "message": " | Rotation rejected by OCR arbitrator"
+    }
+  }
+}

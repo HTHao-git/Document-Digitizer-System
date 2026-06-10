@@ -1,0 +1,27 @@
+{
+  "request_id": "ab8930f1-87ca-4a4d-bc26-28fbddafe5b5",
+  "document_id": "local_doc_1",
+  "module": "preprocess",
+  "version": "1.0.0",
+  "timestamp": "2026-06-09T11:51:45.753317Z",
+  "status": "success",
+  "error": null,
+  "payload": {
+    "page": 1,
+    "input_image": "E:\\HTHao\\Internship\\Document-Digitizer-System\\data\\00_input\\sample01.png",
+    "output_image": "E:\\HTHao\\Internship\\Document-Digitizer-System\\data\\01_preprocess\\images\\sample01_clean.png",
+    "width": 700,
+    "height": 605,
+    "rotation": 0,
+    "is_blank": false,
+    "blank_ratio": 0.11464935064935065,
+    "crop_applied": false,
+    "deskew_angle": 0.0,
+    "osd": {
+      "success": true,
+      "rotate_deg": 0,
+      "conf": 5.15,
+      "message": ""
+    }
+  }
+}

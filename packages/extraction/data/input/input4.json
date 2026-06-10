@@ -1,0 +1,61 @@
+{
+  "request_id": "f3b3902d-aa48-4176-b236-e537480c9781",
+  "document_id": "bhxh_doc_2",
+  "module": "ocr",
+  "version": "1.0.0",
+  "timestamp": "2026-05-26T14:18:10.912441Z",
+  "status": "success",
+  "error": null,
+  "payload": {
+    "page": 1,
+    "input_image": "..\\preprocess\\data\\output\\bhxh_02.png",
+    "engine": "vintern",
+    "language": "vie",
+    "text": "BẢO HIỂM XÃ HỘI TỈNH BÌNH DƯƠNG\nCỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\nSố: 455/QĐ-BHXH\nQUYẾT ĐỊNH\nVề việc thanh tra chuyên ngành đóng BHXH\nĐơn vị được thanh tra: Công ty TNHH Sản xuất Đại Nam.\nMã số thuế: 3702458891.\nTổng số lao động tham gia BHXH: 125 người.",
+    "blocks": [
+      {
+        "level": "line",
+        "text": "BẢO HIỂM XÃ HỘI TỈNH BÌNH DƯƠNG",
+        "bbox": [
+          52,
+          30,
+          600,
+          50
+        ],
+        "confidence": 96.9
+      },
+      {
+        "level": "line",
+        "text": "Số: 455/QĐ-BHXH",
+        "bbox": [
+          60,
+          92,
+          280,
+          110
+        ],
+        "confidence": 98.5
+      },
+      {
+        "level": "line",
+        "text": "QUYẾT ĐỊNH",
+        "bbox": [
+          255,
+          125,
+          450,
+          148
+        ],
+        "confidence": 99.0
+      }
+    ],
+    "meta": {
+      "model_name": "5CD-AI/Vintern-1B-v3_5",
+      "device": "cuda",
+      "overall_confidence": 95.9,
+      "bounding_boxes": {
+        "enabled": true,
+        "count": 3,
+        "method": "craft_poly"
+      }
+    }
+  }
+}

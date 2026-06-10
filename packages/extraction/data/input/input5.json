@@ -1,0 +1,61 @@
+{
+  "request_id": "9991adb6-c3bd-43aa-a3ba-05ff2173e53e",
+  "document_id": "criminal_doc_1",
+  "module": "ocr",
+  "version": "1.0.0",
+  "timestamp": "2026-05-26T14:12:22.145223Z",
+  "status": "success",
+  "error": null,
+  "payload": {
+    "page": 1,
+    "input_image": "..\\preprocess\\data\\output\\toa_an_02.png",
+    "engine": "vintern",
+    "language": "vie",
+    "text": "TÒA ÁN NHÂN DÂN TỈNH ĐỒNG NAI\nCỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập - Tự do - Hạnh phúc\nSố: 102/2026/HS-ST\nBẢN ÁN\nVề tội trộm cắp tài sản\nBị cáo: Trần Văn Hùng, sinh năm 1995.\nĐịa chỉ: phường Long Bình, thành phố Biên Hòa, tỉnh Đồng Nai.\nTài sản chiếm đoạt trị giá: 85.000.000 đồng.",
+    "blocks": [
+      {
+        "level": "line",
+        "text": "TÒA ÁN NHÂN DÂN TỈNH ĐỒNG NAI",
+        "bbox": [
+          48,
+          26,
+          590,
+          46
+        ],
+        "confidence": 97.8
+      },
+      {
+        "level": "line",
+        "text": "Số: 102/2026/HS-ST",
+        "bbox": [
+          55,
+          88,
+          300,
+          106
+        ],
+        "confidence": 98.4
+      },
+      {
+        "level": "line",
+        "text": "BẢN ÁN",
+        "bbox": [
+          280,
+          122,
+          390,
+          145
+        ],
+        "confidence": 99.2
+      }
+    ],
+    "meta": {
+      "model_name": "5CD-AI/Vintern-1B-v3_5",
+      "device": "cuda",
+      "overall_confidence": 96.8,
+      "bounding_boxes": {
+        "enabled": true,
+        "count": 3,
+        "method": "craft_poly"
+      }
+    }
+  }
+}

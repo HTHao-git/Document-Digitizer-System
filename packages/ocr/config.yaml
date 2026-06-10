@@ -1,0 +1,30 @@
+io:
+  input_json_dir: ./../preprocess/data/json
+  output_json_dir: ./data/json
+
+engine:
+  name: vintern
+  language: vie
+
+vintern:
+  model_name: 5CD-AI/Vintern-1B-v3_5
+  device: cuda
+  trust_remote_code: true
+  max_new_tokens: 1024
+  temperature: 0.0
+  prompt: |
+    Hãy trích xuất toàn bộ văn bản bao gồm cả chữ và số trong ảnh một cách chính xác nhất. Đảm bảo đúng chính tả tiếng Việt. Giữ nguyên thứ tự đọc từ trên xuống dưới, trái sang phải và Giữ nguyên xuống dòng như trong ảnh.
+    Chỉ trả về văn bản, không thêm giải thích.
+
+behavior:
+  skip_blank_pages: true
+  detector: craft
+  join_lines: false
+  bbox_pad_x_ratio: 0.05
+  bbox_pad_y_ratio: 0.10
+  bbox_pad_px: 3
+  min_ink_ratio: 0.0
+  vintern_crop_max_num: 2
+  vintern_crop_max_new_tokens: 1024
+  confidence_threshold_yellow: 97
+  confidence_threshold_red: 90

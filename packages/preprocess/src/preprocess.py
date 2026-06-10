@@ -60,12 +60,24 @@ def validate_config(cfg):
     if "min_width" not in cfg["osd"] or "min_height" not in cfg["osd"]:
         raise ValueError("Missing osd.min_width/min_height in config.yaml")
 
-def load_config(config_path="config.yaml", schema_path="schemas/config.schema.json"):
+def load_config(config_path="config.yaml", schema_path=None):
+    # Determine the directory where this current file is located (src/)
+    current_dir = Path(__file__).resolve().parent
+    # The package root is one level up from src/
+    package_root = current_dir.parent 
+
+    # If schema_path wasn't passed or is a default relative string, anchor it to the package root
+    if schema_path is None or schema_path == "schemas/config.schema.json":
+        schema_path = package_root / "schemas" / "config.schema.json"
+    else:
+        schema_path = Path(schema_path)
+
+    config_path = Path(config_path)
+
     with open(config_path, "r", encoding="utf-8") as f:
-        user_cfg = yaml.safe_load(f) or {}
+        cfg = yaml.safe_load(f) or {}
 
-    cfg = deep_merge(DEFAULT_CONFIG, user_cfg)
-
+    # Now it will reliably find the schema regardless of where you call python from
     with open(schema_path, "r", encoding="utf-8") as f:
         schema = json.load(f)
 
@@ -76,13 +88,22 @@ def load_config(config_path="config.yaml", schema_path="schemas/config.schema.js
 
     return cfg
 
-def validate_output(result, schema_path="schemas/preprocess.schema.json"):
+def validate_output(result, schema_path=None):
+    # Determine the directory where this current file is located (src/)
+    current_dir = Path(__file__).resolve().parent
+    # The package root is one level up from src/ (packages/preprocess/)
+    package_root = current_dir.parent 
+
+    # Explicitly anchor the schema path to the package directory
+    if schema_path is None or schema_path == "schemas/preprocess.schema.json":
+        schema_path = package_root / "schemas" / "preprocess.schema.json"
+    else:
+        schema_path = Path(schema_path)
+
     with open(schema_path, "r", encoding="utf-8") as f:
         schema = json.load(f)
-    try:
-        validate(instance=result, schema=schema)
-    except ValidationError as e:
-        raise ValueError(f"Output JSON invalid: {e.message}")
+        
+    validate(instance=result, schema=schema)
 
 def setup_logger(log_path=None):
     logger = logging.getLogger("module1")

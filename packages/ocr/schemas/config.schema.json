@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Module2Config",
+  "type": "object",
+  "required": ["io", "engine", "behavior"],
+  "properties": {
+    "io": {
+      "type": "object",
+      "required": ["input_json_dir", "output_json_dir"],
+      "properties": {
+        "input_json_dir": { "type": "string" },
+        "output_json_dir": { "type": "string" }
+      }
+    },
+    "engine": {
+      "type": "object",
+      "required": ["name", "language"],
+      "properties": {
+        "name": { "type": "string", "enum": ["vintern"] },
+        "language": { "type": "string" }
+      }
+    },
+    "vintern": {
+      "type": "object",
+      "properties": {
+        "model_name": { "type": "string" },
+        "device": { "type": "string", "enum": ["auto", "cpu", "cuda"] },
+        "trust_remote_code": { "type": "boolean" },
+        "max_new_tokens": { "type": "integer", "minimum": 1 },
+        "temperature": { "type": "number", "minimum": 0.0 },
+        "prompt": { "type": "string" }
+      }
+    },
+    "behavior": {
+      "type": "object",
+      "required": ["skip_blank_pages"],
+      "properties": {
+        "skip_blank_pages": { "type": "boolean" },
+        "enable_bounding_boxes": { "type": "boolean" },
+        "detector": { "type": "string", "enum": ["craft", "cv"] },
+        "join_lines": { "type": "boolean" },
+        "bbox_pad_x_ratio": { "type": "number", "minimum": 0.0, "maximum": 0.5 },
+        "bbox_pad_y_ratio": { "type": "number", "minimum": 0.0, "maximum": 0.5 },
+        "bbox_pad_px": { "type": "integer", "minimum": 0, "maximum": 200 },
+        "min_ink_ratio": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "vintern_crop_max_num": { "type": "integer", "minimum": 1, "maximum": 24 },
+        "vintern_crop_max_new_tokens": { "type": "integer", "minimum": 1, "maximum": 2048 },
+        "confidence_threshold_yellow": { "type": "number", "minimum": 0.0, "maximum": 100.0 },
+        "confidence_threshold_red": { "type": "number", "minimum": 0.0, "maximum": 100.0 }
+      }
+    }
+  }
+}
